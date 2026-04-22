@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Add Prep Question | CareerForge{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10 col-xl-9">
+        <div class="glass-card p-4 p-md-5">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+                <div>
+                    <span class="section-pill">Question Bank</span>
+                    <h2 class="fw-bold mt-3 mb-1">Add Preparation Question</h2>
+                    <p class="small-muted mb-0">
+                        Save interview questions and answers topic-wise for faster revision.
+                    </p>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ url_for('all_prep_questions') }}" class="btn btn-light-soft">All Questions</a>
+                    <a href="{{ url_for('add_prep_topic') }}" class="btn btn-light-soft">Add Topic</a>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('add_prep_question') }}">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Select Topic</label>
+                        <select name="topic_id" class="form-select form-select-lg rounded-4">
+                            <option value="">No Topic / General Question</option>
+                            {% for topic in topics %}
+                            <option value="{{ topic.id }}">{{ topic.topic_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Difficulty</label>
+                        <select name="difficulty" class="form-select form-select-lg rounded-4">
+                            <option value="">Select Difficulty</option>
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Question</label>
+                        <textarea name="question" rows="3" class="form-control rounded-4"
+                            placeholder="Enter interview question" required></textarea>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Answer</label>
+                        <textarea name="answer" rows="7" class="form-control rounded-4"
+                            placeholder="Write the answer, explanation, key points, or sample response..."></textarea>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="soft-card p-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_important" id="isImportant">
+                                <label class="form-check-label fw-semibold" for="isImportant">
+                                    Mark this as an important question
+                                </label>
+                            </div>
+                            <div class="small-muted mt-2">
+                                Important questions can later be revised separately before interviews.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    <button type="submit" class="btn btn-primary-soft">
+                        Add Preparation Question
+                    </button>
+                    <a href="{{ url_for('all_prep_questions') }}" class="btn btn-light-soft">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

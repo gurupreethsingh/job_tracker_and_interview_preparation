@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}All Job Applications | CareerForge{% endblock %}
+
+{% block content %}
+<div class="glass-card p-4 p-md-5">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+        <div>
+            <span class="section-pill">Superadmin</span>
+            <h2 class="fw-bold mt-3 mb-1">All Job Applications</h2>
+            <p class="text-muted mb-0">View and manage all job applications submitted by users.</p>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h5 class="mb-0">Total Applications: <span class="badge bg-primary rounded-pill">{{ apps|length }}</span></h5>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Applicant</th>
+                    <th>Job Title</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Resume</th>
+                    <th>Applied At</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if apps %}
+                {% for app in apps %}
+                <tr>
+                    <td>{{ app.id }}</td>
+                    <td class="fw-semibold">{{ app.full_name }}</td>
+                    <td>{{ app.title }}</td>
+                    <td>{{ app.email }}</td>
+                    <td>
+                        {% if app.status == 'Accepted' %}
+                        <span class="badge bg-success rounded-pill">{{ app.status }}</span>
+                        {% elif app.status == 'Rejected' %}
+                        <span class="badge bg-danger rounded-pill">{{ app.status }}</span>
+                        {% else %}
+                        <span class="badge bg-warning text-dark rounded-pill">{{ app.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if app.resume %}
+                        <a href="{{ url_for('download_resume', filename=app.resume) }}"
+                            class="btn btn-sm btn-outline-dark rounded-pill">Download</a>
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td>{{ app.created_at }}</td>
+                    <td>
+                        <div class="d-flex flex-wrap gap-2 justify-content-center">
+                            <a href="{{ url_for('single_application', application_id=app.id) }}"
+                                class="btn btn-sm btn-outline-primary rounded-pill">View</a>
+                            <a href="{{ url_for('update_application', app_id=app.id, status='Accepted') }}"
+                                class="btn btn-sm btn-outline-success rounded-pill">Accept</a>
+                            <a href="{{ url_for('update_application', app_id=app.id, status='Rejected') }}"
+                                class="btn btn-sm btn-outline-danger rounded-pill">Reject</a>
+
+                            <form method="POST" action="{{ url_for('delete_application', application_id=app.id) }}"
+                                onsubmit="return confirm('Delete this application?');">
+                                <button type="submit"
+                                    class="btn btn-sm btn-outline-secondary rounded-pill">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">No job applications found.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

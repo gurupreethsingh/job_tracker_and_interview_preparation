@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% block title %}User Dashboard | CareerForge{% endblock %}
+
+{% block content %}
+<section class="glass-card p-4 p-md-5 mb-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+        <div>
+            <span class="section-pill">Candidate workspace</span>
+            <h1 class="fw-bold mt-3 mb-2">Hello, {{ current_user_name }}</h1>
+            <p class="small-muted mb-0">
+                Manage your interview preparation, browse jobs, apply for opportunities, and track all your application
+                notifications from one place.
+            </p>
+        </div>
+        <div class="soft-card p-3">
+            <div class="small-muted">Access type</div>
+            <div class="fw-bold">User / Candidate Panel</div>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4 mb-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">Available Topics</div>
+            <h2 style="color: var(--primary);">{{ available_topic_count }}</h2>
+            <div class="small-muted">Published by superadmin</div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">My Topics</div>
+            <h2 style="color: var(--success);">{{ total_selected_topics }}</h2>
+            <div class="small-muted">Selected by you</div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">Completed Topics</div>
+            <h2 style="color: var(--warning);">{{ completed_topics }}</h2>
+            <div class="small-muted">Mastered progress</div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">My Questions</div>
+            <h2 style="color: var(--danger);">{{ total_selected_questions }}</h2>
+            <div class="small-muted">Saved in your bank</div>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4 mb-4">
+    <div class="col-md-6 col-xl-4">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">Applied Jobs</div>
+            <h2 style="color: var(--primary);">{{ my_applications_count }}</h2>
+            <div class="small-muted">Applications submitted by you</div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">Important Questions</div>
+            <h2 style="color: var(--warning);">{{ important_questions }}</h2>
+            <div class="small-muted">Marked for revision</div>
+        </div>
+    </div>
+
+    <div class="col-md-12 col-xl-4">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">Unread Notifications</div>
+            <h2 style="color: var(--success);">{{ unread_notifications_count }}</h2>
+            <div class="small-muted">Latest updates on job applications</div>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="glass-card p-4 h-100">
+            <h4 class="fw-bold mb-3">Interview Preparation Actions</h4>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <a href="{{ url_for('available_topics') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--primary);">Browse Topics</div>
+                            <div class="small-muted">See master topics</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="{{ url_for('my_topics') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--success);">My Topics</div>
+                            <div class="small-muted">Update your progress</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="{{ url_for('available_questions') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--warning);">Browse Questions</div>
+                            <div class="small-muted">Pick questions to save</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="{{ url_for('my_questions') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--danger);">My Question Bank</div>
+                            <div class="small-muted">Revise saved questions</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="glass-card p-4 h-100">
+            <h4 class="fw-bold mb-3">Job Tracker Actions</h4>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <a href="{{ url_for('user_jobs') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--primary);">Browse Jobs</div>
+                            <div class="small-muted">Explore openings</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="{{ url_for('my_applications') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--success);">My Applications</div>
+                            <div class="small-muted">Track submitted jobs</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="{{ url_for('notifications') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--warning);">Notifications</div>
+                            <div class="small-muted">View application updates</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="{{ url_for('user_jobs') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--danger);">Apply Now</div>
+                            <div class="small-muted">Start your next application</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4 mb-4">
+    <div class="col-lg-8">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h4 class="fw-bold mb-1">Recent Selected Topics</h4>
+                    <div class="small-muted">Your latest chosen topics</div>
+                </div>
+                <a href="{{ url_for('my_topics') }}" class="btn btn-light-soft btn-sm">View All</a>
+            </div>
+
+            {% if recent_topics %}
+            <div class="table-responsive">
+                <table class="table table-clean align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Topic</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Selected On</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for topic in recent_topics %}
+                        <tr>
+                            <td class="fw-semibold">{{ topic.topic_name }}</td>
+                            <td>{{ topic.category if topic.category else '—' }}</td>
+                            <td><span class="status-badge status-user">{{ topic.progress_status }}</span></td>
+                            <td>{{ topic.created_at }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="soft-card p-4 text-center">
+                <h6 class="fw-bold mb-2">No topics selected yet</h6>
+                <p class="small-muted mb-3">Start by selecting topics from the master library.</p>
+                <a href="{{ url_for('available_topics') }}" class="btn btn-primary-soft">Browse Topics</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="glass-card p-4 h-100">
+            <h4 class="fw-bold mb-3">Your focus</h4>
+            <div class="soft-card p-3 mb-3">
+                <div class="fw-semibold mb-1">Interview Revision</div>
+                <div class="small-muted">{{ important_questions }} important questions marked for quick revision.</div>
+            </div>
+            <div class="soft-card p-3 mb-3">
+                <div class="fw-semibold mb-1">Job Applications</div>
+                <div class="small-muted">{{ my_applications_count }} job applications tracked in your account.</div>
+            </div>
+            <div class="soft-card p-3">
+                <div class="fw-semibold mb-1">Recommended Flow</div>
+                <div class="small-muted">Prepare interview topics, browse jobs, apply with your resume, and track
+                    notifications regularly.</div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

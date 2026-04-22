@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Application Details | CareerForge{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="glass-card p-4 p-md-5">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
+                <div>
+                    <span class="section-pill">Superadmin</span>
+                    <h2 class="fw-bold mt-3 mb-1">Application Details</h2>
+                    <p class="text-muted mb-0">Review the complete submitted job application.</p>
+                </div>
+                <a href="{{ url_for('all_applications') }}" class="btn btn-light-soft">Back</a>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="border rounded-4 p-3 h-100">
+                        <h6 class="fw-bold">Applicant Name</h6>
+                        <p class="mb-0 text-muted">{{ application.full_name }}</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded-4 p-3 h-100">
+                        <h6 class="fw-bold">Job Title</h6>
+                        <p class="mb-0 text-muted">{{ application.title }}</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded-4 p-3 h-100">
+                        <h6 class="fw-bold">Email</h6>
+                        <p class="mb-0 text-muted">{{ application.email }}</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded-4 p-3 h-100">
+                        <h6 class="fw-bold">Phone</h6>
+                        <p class="mb-0 text-muted">{{ application.phone }}</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded-4 p-3 h-100">
+                        <h6 class="fw-bold">Status</h6>
+                        <p class="mb-0 text-muted">{{ application.status }}</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded-4 p-3 h-100">
+                        <h6 class="fw-bold">Resume</h6>
+                        {% if application.resume %}
+                        <a href="{{ url_for('download_resume', filename=application.resume) }}"
+                            class="btn btn-sm btn-outline-dark rounded-pill">Download Resume</a>
+                        {% else %}
+                        <p class="mb-0 text-muted">No resume uploaded.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="border rounded-4 p-4">
+                        <h5 class="fw-bold mb-3">Cover Letter</h5>
+                        <p class="mb-0" style="white-space: pre-line;">{{ application.cover_letter or 'No cover letter
+                            submitted.' }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <a href="{{ url_for('update_application', app_id=application.id, status='Accepted') }}"
+                    class="btn btn-success rounded-pill px-4">Accept</a>
+                <a href="{{ url_for('update_application', app_id=application.id, status='Rejected') }}"
+                    class="btn btn-danger rounded-pill px-4">Reject</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

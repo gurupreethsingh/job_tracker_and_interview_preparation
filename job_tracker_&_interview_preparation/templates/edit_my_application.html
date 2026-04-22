@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Edit Application | CareerForge{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="glass-card p-4 p-md-5">
+            <div class="mb-4">
+                <span class="section-pill">User</span>
+                <h2 class="fw-bold mt-3 mb-1">Edit Applied Job Details</h2>
+                <p class="text-muted mb-0">Update your submitted application details and resume.</p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Full Name</label>
+                        <input type="text" name="full_name" value="{{ application.full_name }}"
+                            class="form-control form-control-lg rounded-4" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Email</label>
+                        <input type="email" name="email" value="{{ application.email }}"
+                            class="form-control form-control-lg rounded-4" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Phone</label>
+                        <input type="text" name="phone" value="{{ application.phone }}"
+                            class="form-control form-control-lg rounded-4" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Upload New Resume</label>
+                        <input type="file" name="resume" class="form-control form-control-lg rounded-4">
+                        {% if application.resume %}
+                        <small class="text-muted">Current Resume: {{ application.resume }}</small>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Cover Letter</label>
+                        <textarea name="cover_letter" rows="7" class="form-control rounded-4"
+                            required>{{ application.cover_letter }}</textarea>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4 flex-wrap">
+                    <button type="submit" class="btn btn-primary-soft">Update Application</button>
+                    <a href="{{ url_for('my_applications') }}"
+                        class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

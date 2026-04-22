@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Job Details | CareerForge{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="glass-card p-4 p-md-5">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+                <div>
+                    <span class="section-pill">Superadmin</span>
+                    <h2 class="fw-bold mt-3 mb-1">{{ job.title }}</h2>
+                    <p class="text-muted mb-0">{{ job.company }} • {{ job.location or 'Location not specified' }}</p>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="{{ url_for('edit_job', job_id=job.id) }}"
+                        class="btn btn-warning rounded-pill px-4">Edit</a>
+                    <a href="{{ url_for('all_jobs') }}" class="btn btn-light-soft">Back</a>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="border rounded-4 p-3 h-100">
+                        <h6 class="fw-bold mb-2">Company</h6>
+                        <p class="mb-0 text-muted">{{ job.company or '-' }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="border rounded-4 p-3 h-100">
+                        <h6 class="fw-bold mb-2">Location</h6>
+                        <p class="mb-0 text-muted">{{ job.location or '-' }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="border rounded-4 p-3 h-100">
+                        <h6 class="fw-bold mb-2">Salary</h6>
+                        <p class="mb-0 text-muted">{{ job.salary or '-' }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border rounded-4 p-4">
+                <h5 class="fw-bold mb-3">Job Description</h5>
+                <p class="mb-0" style="white-space: pre-line;">{{ job.description or 'No description available.' }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

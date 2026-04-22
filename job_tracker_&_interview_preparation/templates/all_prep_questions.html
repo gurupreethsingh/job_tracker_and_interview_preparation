@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}All Prep Questions | CareerForge{% endblock %}
+
+{% block content %}
+<section class="glass-card p-4 p-md-5 mb-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+        <div>
+            <span class="section-pill">Question Bank</span>
+            <h1 class="fw-bold mt-3 mb-2">All Preparation Questions</h1>
+            <p class="small-muted mb-0">
+                Search, filter, and revise your interview question bank.
+            </p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{{ url_for('add_prep_question') }}" class="btn btn-primary-soft">Add Question</a>
+            <a href="{{ url_for('all_prep_topics') }}" class="btn btn-light-soft">View Topics</a>
+        </div>
+    </div>
+</section>
+
+<section class="soft-card p-4 mb-4">
+    <form method="GET" action="{{ url_for('all_prep_questions') }}">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Search</label>
+                <input type="text" name="search" value="{{ search }}" class="form-control rounded-4"
+                    placeholder="Search question or answer">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Topic</label>
+                <select name="topic_id" class="form-select rounded-4">
+                    <option value="">All Topics</option>
+                    {% for topic in topics %}
+                    <option value="{{ topic.id }}" {% if topic_filter==topic.id|string %}selected{% endif %}>
+                        {{ topic.topic_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">Difficulty</label>
+                <select name="difficulty" class="form-select rounded-4">
+                    <option value="">All</option>
+                    <option value="Easy" {% if difficulty_filter=='Easy' %}selected{% endif %}>Easy</option>
+                    <option value="Medium" {% if difficulty_filter=='Medium' %}selected{% endif %}>Medium</option>
+                    <option value="Hard" {% if difficulty_filter=='Hard' %}selected{% endif %}>Hard</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">Important</label>
+                <select name="important" class="form-select rounded-4">
+                    <option value="">All</option>
+                    <option value="1" {% if important_filter=='1' %}selected{% endif %}>Important Only</option>
+                </select>
+            </div>
+
+            <div class="col-md-1 d-grid">
+                <button type="submit" class="btn btn-primary-soft">Go</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<section class="glass-card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h3 class="fw-bold mb-1">Saved Questions</h3>
+            <div class="small-muted">{{ questions|length }} questions found</div>
+        </div>
+    </div>
+
+    {% if questions %}
+    <div class="row g-4">
+        {% for item in questions %}
+        <div class="col-12">
+            <div class="soft-card p-4">
+                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3 mb-3">
+                    <div>
+                        <div class="d-flex flex-wrap gap-2 mb-2">
+                            {% if item.topic_name %}
+                            <span class="status-badge status-user">{{ item.topic_name }}</span>
+                            {% else %}
+                            <span class="status-badge"
+                                style="background: rgba(148,163,184,.15); color: #475569;">General</span>
+                            {% endif %}
+
+                            {% if item.difficulty %}
+                            <span class="status-badge" style="background: rgba(79,70,229,.12); color: #4338ca;">
+                                {{ item.difficulty }}
+                            </span>
+                            {% endif %}
+
+                            {% if item.is_important == 1 %}
+                            <span class="status-badge" style="background: rgba(245,158,11,.16); color: #b45309;">
+                                Important
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <h5 class="fw-bold mb-2">{{ item.question }}</h5>
+                    </div>
+
+                    <div class="small-muted text-lg-end">
+                        Added on<br>
+                        {{ item.created_at }}
+                    </div>
+                </div>
+
+                <div class="small-muted mb-2">Answer</div>
+                <div class="mb-0">
+                    {{ item.answer if item.answer else 'No answer added yet.' }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="soft-card p-5 text-center">
+        <h5 class="fw-bold mb-2">No questions found</h5>
+        <p class="small-muted mb-3">
+            Add your first preparation question to start building your interview question bank.
+        </p>
+        <a href="{{ url_for('add_prep_question') }}" class="btn btn-primary-soft">Add First Question</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

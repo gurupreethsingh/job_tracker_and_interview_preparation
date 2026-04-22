@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}My Topics | CareerForge{% endblock %}
+{% block content %}
+<section class="glass-card p-4 p-md-5 mb-4">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+    <div><span class="section-pill">User</span><h1 class="fw-bold mt-3 mb-2">My Selected Topics</h1><p class="small-muted mb-0">Track your personal progress on the topics you selected.</p></div>
+    <a href="{{ url_for('available_topics') }}" class="btn btn-primary-soft">Browse More Topics</a>
+  </div>
+</section>
+<section class="row g-4">
+{% for topic in topics %}
+  <div class="col-md-6 col-xl-4">
+    <div class="soft-card p-4 h-100">
+      <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+        <div>
+          <div class="small-muted mb-1">{{ topic.category if topic.category else 'General' }}</div>
+          <h5 class="fw-bold mb-1">{{ topic.topic_name }}</h5>
+        </div>
+        <span class="status-badge status-user">{{ topic.progress_status }}</span>
+      </div>
+      <p class="small-muted mb-2">{{ topic.description if topic.description else 'No description.' }}</p>
+      <div class="mb-3"><strong>Your Notes:</strong><br>{{ topic.notes if topic.notes else 'No personal notes yet.' }}</div>
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="{{ url_for('update_my_topic', selected_topic_id=topic.id) }}" class="btn btn-light-soft btn-sm">Update Progress</a>
+        <form method="POST" action="{{ url_for('remove_my_topic', selected_topic_id=topic.id) }}" onsubmit="return confirm('Remove this topic from your list?');">
+          <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">Remove</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div class="col-12"><div class="soft-card p-4 text-center"><div class="fw-bold mb-2">No selected topics yet</div><a href="{{ url_for('available_topics') }}" class="btn btn-primary-soft btn-sm">Browse Topics</a></div></div>
+{% endfor %}
+</section>
+{% endblock %}

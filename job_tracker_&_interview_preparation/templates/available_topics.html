@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Available Topics | CareerForge{% endblock %}
+{% block content %}
+<section class="glass-card p-4 p-md-5 mb-4">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+    <div><span class="section-pill">User</span><h1 class="fw-bold mt-3 mb-2">Available Topics</h1><p class="small-muted mb-0">Browse the superadmin’s topic library and choose what you want to prepare.</p></div>
+    <a href="{{ url_for('my_topics') }}" class="btn btn-light-soft">My Topics</a>
+  </div>
+</section>
+<section class="soft-card p-4 mb-4">
+  <form method="GET">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-6"><label class="form-label fw-semibold">Search</label><input type="text" name="search" value="{{ search }}" class="form-control rounded-4"></div>
+      <div class="col-md-4"><label class="form-label fw-semibold">Category</label><select name="category" class="form-select rounded-4"><option value="">All</option>{% for row in categories %}<option value="{{ row.category }}" {% if category == row.category %}selected{% endif %}>{{ row.category }}</option>{% endfor %}</select></div>
+      <div class="col-md-2 d-grid"><button type="submit" class="btn btn-primary-soft">Filter</button></div>
+    </div>
+  </form>
+</section>
+<section class="row g-4">
+{% for topic in topics %}
+  <div class="col-md-6 col-xl-4">
+    <div class="soft-card p-4 h-100">
+      <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+        <div>
+          <div class="small-muted mb-1">{{ topic.category if topic.category else 'General' }}</div>
+          <h5 class="fw-bold mb-1">{{ topic.topic_name }}</h5>
+        </div>
+        {% if topic.already_selected %}
+          <span class="status-badge status-user">Selected</span>
+        {% else %}
+          <span class="status-badge status-admin">Available</span>
+        {% endif %}
+      </div>
+      <p class="small-muted">{{ topic.description if topic.description else 'No description added.' }}</p>
+      {% if topic.already_selected %}
+        <a href="{{ url_for('my_topics') }}" class="btn btn-light-soft btn-sm">Go to My Topics</a>
+      {% else %}
+        <form method="POST" action="{{ url_for('select_topic', topic_id=topic.id) }}">
+          <button type="submit" class="btn btn-primary-soft btn-sm">Select Topic</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+{% else %}
+  <div class="col-12"><div class="soft-card p-4 text-center small-muted">No topics available.</div></div>
+{% endfor %}
+</section>
+{% endblock %}

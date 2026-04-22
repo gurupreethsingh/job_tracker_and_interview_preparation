@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+{% block title %}Super Admin Dashboard | CareerForge{% endblock %}
+
+{% block content %}
+<section class="glass-card p-4 p-md-5 mb-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+        <div>
+            <span class="section-pill">Admin control center</span>
+            <h1 class="fw-bold mt-3 mb-2">Welcome, {{ current_user_name }}</h1>
+            <p class="small-muted mb-0">
+                Manage both the interview preparation library and the complete job tracker module from one admin
+                dashboard.
+            </p>
+        </div>
+        <div class="soft-card p-3">
+            <div class="small-muted">Access type</div>
+            <div class="fw-bold">Superadmin Control Panel</div>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4 mb-4">
+    <div class="col-md-4 col-xl-2">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">Active Users</div>
+            <h2 style="color: var(--primary);">{{ total_users }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">Admins</div>
+            <h2 style="color: var(--warning);">{{ total_superadmins }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">Deleted Users</div>
+            <h2 style="color: var(--danger);">{{ deleted_users_count }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">Master Topics</div>
+            <h2 style="color: var(--success);">{{ total_master_topics }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">Master Questions</div>
+            <h2 style="color: var(--primary);">{{ total_master_questions }}</h2>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4 mb-4">
+    <div class="col-md-6 col-xl-6">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">Active Jobs</div>
+            <h2 style="color: var(--success);">{{ total_jobs }}</h2>
+            <div class="small-muted">Published job openings</div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-6">
+        <div class="soft-card p-4 h-100 metric-card">
+            <div class="small-muted mb-2">Job Applications</div>
+            <h2 style="color: var(--danger);">{{ total_job_applications }}</h2>
+            <div class="small-muted">Applications submitted by users</div>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="glass-card p-4 h-100">
+            <h4 class="fw-bold mb-3">Interview Preparation Management</h4>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <a href="{{ url_for('add_master_topic') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--primary);">Add Topic</div>
+                            <div class="small-muted">Create master topic</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="{{ url_for('all_master_topics') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--success);">All Topics</div>
+                            <div class="small-muted">Manage topic library</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="{{ url_for('add_master_question') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--warning);">Add Question</div>
+                            <div class="small-muted">Create master question</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="{{ url_for('all_master_questions') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--danger);">All Questions</div>
+                            <div class="small-muted">Manage question library</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="glass-card p-4 h-100">
+            <h4 class="fw-bold mb-3">Job Tracker Management</h4>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <a href="{{ url_for('add_job') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--primary);">Add Job</div>
+                            <div class="small-muted">Publish a new opening</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="{{ url_for('all_jobs') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--success);">All Jobs</div>
+                            <div class="small-muted">Manage job listings</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="{{ url_for('all_applications') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--warning);">All Applications</div>
+                            <div class="small-muted">Review candidate applications</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="{{ url_for('all_users') }}" class="text-decoration-none">
+                        <div class="soft-card p-3 h-100 text-center">
+                            <div class="fw-bold mb-1" style="color: var(--danger);">Manage Users</div>
+                            <div class="small-muted">Control platform access</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4 mb-4">
+    <div class="col-lg-4">
+        <div class="glass-card p-4 h-100">
+            <h4 class="fw-bold mb-3">Interview Prep Flow</h4>
+            <div class="soft-card p-3 mb-3">
+                <div class="fw-semibold mb-1">Step 1</div>
+                <div class="small-muted">Create master topics like DSA, DBMS, HR, OS, CN, Python, Java, React, Testing.
+                </div>
+            </div>
+            <div class="soft-card p-3 mb-3">
+                <div class="fw-semibold mb-1">Step 2</div>
+                <div class="small-muted">Add master questions topic-wise with answers and difficulty levels.</div>
+            </div>
+            <div class="soft-card p-3">
+                <div class="fw-semibold mb-1">Step 3</div>
+                <div class="small-muted">Users prepare using your published content and manage personal revision
+                    progress.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="glass-card p-4 h-100">
+            <h4 class="fw-bold mb-3">Job Tracker Flow</h4>
+            <div class="soft-card p-3 mb-3">
+                <div class="fw-semibold mb-1">Step 1</div>
+                <div class="small-muted">Add jobs with title, company, salary, location, and detailed role description.
+                </div>
+            </div>
+            <div class="soft-card p-3 mb-3">
+                <div class="fw-semibold mb-1">Step 2</div>
+                <div class="small-muted">Users browse jobs, apply with resume and cover letter, and update applications
+                    later.</div>
+            </div>
+            <div class="soft-card p-3">
+                <div class="fw-semibold mb-1">Step 3</div>
+                <div class="small-muted">Review applications, accept or reject candidates, and trigger notifications to
+                    users.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="glass-card p-4 h-100">
+            <h4 class="fw-bold mb-3">Admin Summary</h4>
+            <div class="soft-card p-3 mb-3">
+                <div class="fw-semibold mb-1">Content Published</div>
+                <div class="small-muted">{{ total_master_topics }} topics and {{ total_master_questions }} questions
+                    available in the master library.</div>
+            </div>
+            <div class="soft-card p-3 mb-3">
+                <div class="fw-semibold mb-1">Recruitment Activity</div>
+                <div class="small-muted">{{ total_jobs }} active jobs and {{ total_job_applications }} total
+                    applications in the system.</div>
+            </div>
+            <div class="soft-card p-3">
+                <div class="fw-semibold mb-1">Platform Users</div>
+                <div class="small-muted">{{ total_users }} active users currently using the platform.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="glass-card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4 class="fw-bold mb-1">Recent Registered Users</h4>
+            <div class="small-muted">Latest accounts on the platform</div>
+        </div>
+        <a href="{{ url_for('all_users') }}" class="btn btn-primary-soft btn-sm">Manage Users</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-clean align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in recent_users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td class="fw-semibold">{{ user.full_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <span class="status-badge {{ 'status-admin' if user.role == 'superadmin' else 'status-user' }}">
+                            {{ user.role }}
+                        </span>
+                    </td>
+                    <td>{{ user.created_at }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center py-4 small-muted">No users found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

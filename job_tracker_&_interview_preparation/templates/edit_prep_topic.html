@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Edit Prep Topic | CareerForge{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9 col-xl-8">
+        <div class="glass-card p-4 p-md-5">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+                <div>
+                    <span class="section-pill">Interview Preparation</span>
+                    <h2 class="fw-bold mt-3 mb-1">Edit Preparation Topic</h2>
+                    <p class="small-muted mb-0">
+                        Update the topic details, category, progress status, and notes.
+                    </p>
+                </div>
+                <div>
+                    <a href="{{ url_for('all_prep_topics') }}" class="btn btn-light-soft">Back to All Topics</a>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('edit_prep_topic', topic_id=topic.id) }}">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Topic Name</label>
+                        <input type="text" name="topic_name" value="{{ topic.topic_name }}"
+                            class="form-control form-control-lg rounded-4" placeholder="Enter topic name" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Category</label>
+                        <input type="text" name="category" value="{{ topic.category if topic.category else '' }}"
+                            class="form-control form-control-lg rounded-4" placeholder="Example: DSA, DBMS, HR, OOPs">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Progress Status</label>
+                        <select name="progress_status" class="form-select form-select-lg rounded-4" required>
+                            <option value="Not Started" {% if topic.progress_status=='Not Started' %}selected{% endif
+                                %}>Not Started</option>
+                            <option value="In Progress" {% if topic.progress_status=='In Progress' %}selected{% endif
+                                %}>In Progress</option>
+                            <option value="Revised" {% if topic.progress_status=='Revised' %}selected{% endif %}>Revised
+                            </option>
+                            <option value="Mastered" {% if topic.progress_status=='Mastered' %}selected{% endif %}>
+                                Mastered</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="soft-card p-3 h-100 d-flex flex-column justify-content-center">
+                            <div class="small-muted">Current Progress</div>
+                            <div class="fw-semibold">{{ topic.progress_status }}</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Notes</label>
+                        <textarea name="notes" rows="6" class="form-control rounded-4"
+                            placeholder="Write preparation notes, key concepts, revision ideas, or interview observations...">{{ topic.notes if topic.notes else '' }}</textarea>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    <button type="submit" class="btn btn-primary-soft">
+                        Update Preparation Topic
+                    </button>
+                    <a href="{{ url_for('all_prep_topics') }}" class="btn btn-light-soft">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

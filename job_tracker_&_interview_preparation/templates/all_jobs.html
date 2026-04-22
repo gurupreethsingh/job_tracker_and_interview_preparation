@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}All Jobs | CareerForge{% endblock %}
+
+{% block content %}
+<div class="glass-card p-4 p-md-5">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <span class="section-pill">Superadmin</span>
+            <h2 class="fw-bold mt-3 mb-1">All Jobs</h2>
+            <p class="text-muted mb-0">Manage all active job postings.</p>
+        </div>
+        <a href="{{ url_for('add_job') }}" class="btn btn-primary-soft">Add Job</a>
+    </div>
+
+    <form method="GET" class="row g-3 mb-4">
+        <div class="col-md-10">
+            <input type="text" name="search" class="form-control form-control-lg rounded-4"
+                placeholder="Search by job title or company" value="{{ request.args.get('search', '') }}">
+        </div>
+        <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-light-soft">Search</button>
+        </div>
+    </form>
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h5 class="mb-0">Total Jobs: <span class="badge bg-primary rounded-pill">{{ jobs|length }}</span></h5>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                    <th>Salary</th>
+                    <th>Created At</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if jobs %}
+                {% for job in jobs %}
+                <tr>
+                    <td>{{ job.id }}</td>
+                    <td class="fw-semibold">{{ job.title }}</td>
+                    <td>{{ job.company }}</td>
+                    <td>{{ job.location or '-' }}</td>
+                    <td>{{ job.salary or '-' }}</td>
+                    <td>{{ job.created_at }}</td>
+                    <td>
+                        <div class="d-flex flex-wrap gap-2 justify-content-center">
+                            <a href="{{ url_for('single_job', job_id=job.id) }}"
+                                class="btn btn-sm btn-outline-primary rounded-pill">View</a>
+                            <a href="{{ url_for('edit_job', job_id=job.id) }}"
+                                class="btn btn-sm btn-outline-warning rounded-pill">Edit</a>
+
+                            <form method="POST" action="{{ url_for('delete_job', job_id=job.id) }}"
+                                onsubmit="return confirm('Soft delete this job?');">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary rounded-pill">Soft
+                                    Delete</button>
+                            </form>
+
+                            <form method="POST" action="{{ url_for('hard_delete_job', job_id=job.id) }}"
+                                onsubmit="return confirm('Hard delete this job permanently?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">Hard
+                                    Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-4">No jobs found.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

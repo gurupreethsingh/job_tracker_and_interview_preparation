@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}All Master Topics | CareerForge{% endblock %}
+{% block content %}
+<section class="glass-card p-4 p-md-5 mb-4">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+    <div><span class="section-pill">Superadmin</span><h1 class="fw-bold mt-3 mb-2">All Master Topics</h1><p class="small-muted mb-0">These topics are visible to users for selection.</p></div>
+    <a href="{{ url_for('add_master_topic') }}" class="btn btn-primary-soft">Add Topic</a>
+  </div>
+</section>
+<section class="soft-card p-4 mb-4">
+  <form method="GET">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-6"><label class="form-label fw-semibold">Search</label><input type="text" name="search" value="{{ search }}" class="form-control rounded-4"></div>
+      <div class="col-md-4"><label class="form-label fw-semibold">Category</label><select name="category" class="form-select rounded-4"><option value="">All</option>{% for row in categories %}<option value="{{ row.category }}" {% if category == row.category %}selected{% endif %}>{{ row.category }}</option>{% endfor %}</select></div>
+      <div class="col-md-2 d-grid"><button type="submit" class="btn btn-primary-soft">Filter</button></div>
+    </div>
+  </form>
+</section>
+<section class="glass-card p-4">
+  <div class="table-responsive">
+    <table class="table table-clean align-middle mb-0">
+      <thead><tr><th>Topic</th><th>Category</th><th>Questions</th><th>Created</th><th>Action</th></tr></thead>
+      <tbody>
+        {% for topic in topics %}
+        <tr>
+          <td class="fw-semibold">{{ topic.topic_name }}</td>
+          <td>{{ topic.category if topic.category else '—' }}</td>
+          <td>{{ topic.questions_count }}</td>
+          <td>{{ topic.created_at }}</td>
+          <td>
+            <div class="d-flex gap-2">
+              <a href="{{ url_for('edit_master_topic', topic_id=topic.id) }}" class="btn btn-sm btn-light-soft">Edit</a>
+              <form method="POST" action="{{ url_for('delete_master_topic', topic_id=topic.id) }}" onsubmit="return confirm('Deactivate this topic and its questions?');">
+                <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="text-center py-4 small-muted">No topics found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

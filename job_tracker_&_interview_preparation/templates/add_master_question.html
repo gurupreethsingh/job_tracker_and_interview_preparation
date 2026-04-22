@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Add Master Question | CareerForge{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-9">
+    <div class="glass-card p-4 p-md-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div><span class="section-pill">Superadmin</span><h2 class="fw-bold mt-3 mb-1">Add Master Question</h2></div>
+        <a href="{{ url_for('all_master_questions') }}" class="btn btn-light-soft">All Questions</a>
+      </div>
+      <form method="POST">
+        <div class="row g-3">
+          <div class="col-md-6"><label class="form-label fw-semibold">Topic</label><select name="topic_id" class="form-select form-select-lg rounded-4" required><option value="">Select Topic</option>{% for topic in topics %}<option value="{{ topic.id }}">{{ topic.topic_name }}</option>{% endfor %}</select></div>
+          <div class="col-md-6"><label class="form-label fw-semibold">Difficulty</label><select name="difficulty" class="form-select form-select-lg rounded-4"><option value="">Select Difficulty</option><option value="Easy">Easy</option><option value="Medium">Medium</option><option value="Hard">Hard</option></select></div>
+          <div class="col-12"><label class="form-label fw-semibold">Question</label><textarea name="question" rows="3" class="form-control rounded-4" required></textarea></div>
+          <div class="col-12"><label class="form-label fw-semibold">Answer</label><textarea name="answer" rows="7" class="form-control rounded-4"></textarea></div>
+        </div>
+        <button type="submit" class="btn btn-primary-soft mt-4">Add Master Question</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

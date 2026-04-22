@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Available Questions | CareerForge{% endblock %}
+{% block content %}
+<section class="glass-card p-4 p-md-5 mb-4">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+    <div><span class="section-pill">User</span><h1 class="fw-bold mt-3 mb-2">Available Questions</h1><p class="small-muted mb-0">Browse the master question library and save useful questions to your bank.</p></div>
+    <a href="{{ url_for('my_questions') }}" class="btn btn-light-soft">My Question Bank</a>
+  </div>
+</section>
+<section class="soft-card p-4 mb-4">
+  <form method="GET">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-4"><label class="form-label fw-semibold">Search</label><input type="text" name="search" value="{{ search }}" class="form-control rounded-4"></div>
+      <div class="col-md-3"><label class="form-label fw-semibold">Topic</label><select name="topic_id" class="form-select rounded-4"><option value="">All</option>{% for topic in topics %}<option value="{{ topic.id }}" {% if topic_filter == topic.id|string %}selected{% endif %}>{{ topic.topic_name }}</option>{% endfor %}</select></div>
+      <div class="col-md-2"><label class="form-label fw-semibold">Difficulty</label><select name="difficulty" class="form-select rounded-4"><option value="">All</option><option value="Easy" {% if difficulty == 'Easy' %}selected{% endif %}>Easy</option><option value="Medium" {% if difficulty == 'Medium' %}selected{% endif %}>Medium</option><option value="Hard" {% if difficulty == 'Hard' %}selected{% endif %}>Hard</option></select></div>
+      <div class="col-md-2"><label class="form-label fw-semibold">Scope</label><select name="my_topics_only" class="form-select rounded-4"><option value="">All Questions</option><option value="1" {% if my_topics_only == '1' %}selected{% endif %}>Only My Topics</option></select></div>
+      <div class="col-md-1 d-grid"><button type="submit" class="btn btn-primary-soft">Go</button></div>
+    </div>
+  </form>
+</section>
+<section class="glass-card p-4">
+  {% for item in questions %}
+  <div class="soft-card p-4 mb-3">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-2">
+      <div>
+        <div class="d-flex flex-wrap gap-2 mb-2">
+          <span class="status-badge status-user">{{ item.topic_name }}</span>
+          {% if item.difficulty %}<span class="status-badge status-admin">{{ item.difficulty }}</span>{% endif %}
+          {% if item.already_selected %}<span class="status-badge" style="background: rgba(16,185,129,.14); color:#047857;">In My Bank</span>{% endif %}
+        </div>
+        <h5 class="fw-bold mb-2">{{ item.question }}</h5>
+      </div>
+    </div>
+    <div class="small-muted mb-3">{{ item.answer if item.answer else 'No answer added yet.' }}</div>
+    {% if item.already_selected %}
+      <a href="{{ url_for('my_questions') }}" class="btn btn-light-soft btn-sm">Go to My Questions</a>
+    {% else %}
+      <form method="POST" action="{{ url_for('select_question', question_id=item.id) }}">
+        <button type="submit" class="btn btn-primary-soft btn-sm">Save to My Bank</button>
+      </form>
+    {% endif %}
+  </div>
+  {% else %}
+  <div class="soft-card p-4 text-center small-muted">No questions found.</div>
+  {% endfor %}
+</section>
+{% endblock %}

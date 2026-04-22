@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Update My Topic | CareerForge{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="glass-card p-4 p-md-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div><span class="section-pill">User</span><h2 class="fw-bold mt-3 mb-1">Update My Topic</h2></div>
+        <a href="{{ url_for('my_topics') }}" class="btn btn-light-soft">Back</a>
+      </div>
+      <div class="soft-card p-3 mb-4">
+        <div class="small-muted mb-1">{{ selected_topic.category if selected_topic.category else 'General' }}</div>
+        <div class="fw-bold">{{ selected_topic.topic_name }}</div>
+        <div class="small-muted mt-2">{{ selected_topic.description if selected_topic.description else 'No description.' }}</div>
+      </div>
+      <form method="POST">
+        <div class="mb-3"><label class="form-label fw-semibold">Progress Status</label><select name="progress_status" class="form-select form-select-lg rounded-4" required><option value="Not Started" {% if selected_topic.progress_status == 'Not Started' %}selected{% endif %}>Not Started</option><option value="In Progress" {% if selected_topic.progress_status == 'In Progress' %}selected{% endif %}>In Progress</option><option value="Revised" {% if selected_topic.progress_status == 'Revised' %}selected{% endif %}>Revised</option><option value="Mastered" {% if selected_topic.progress_status == 'Mastered' %}selected{% endif %}>Mastered</option></select></div>
+        <div class="mb-4"><label class="form-label fw-semibold">My Notes</label><textarea name="notes" rows="6" class="form-control rounded-4">{{ selected_topic.notes if selected_topic.notes else '' }}</textarea></div>
+        <button type="submit" class="btn btn-primary-soft">Update Topic</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

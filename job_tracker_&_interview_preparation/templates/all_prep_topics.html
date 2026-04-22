@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}All Prep Topics | CareerForge{% endblock %}
+
+{% block content %}
+<section class="glass-card p-4 p-md-5 mb-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+        <div>
+            <span class="section-pill">Interview Preparation</span>
+            <h1 class="fw-bold mt-3 mb-2">All Preparation Topics</h1>
+            <p class="small-muted mb-0">
+                Manage your preparation topics, progress status, and revision notes.
+            </p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{{ url_for('add_prep_topic') }}" class="btn btn-primary-soft">Add Topic</a>
+            <a href="{{ url_for('add_prep_question') }}" class="btn btn-light-soft">Add Question</a>
+        </div>
+    </div>
+</section>
+
+<section class="soft-card p-4 mb-4">
+    <form method="GET" action="{{ url_for('all_prep_topics') }}">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Search</label>
+                <input type="text" name="search" value="{{ search }}" class="form-control rounded-4"
+                    placeholder="Search by topic name or category">
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Filter by Progress</label>
+                <select name="progress_status" class="form-select rounded-4">
+                    <option value="">All Progress Status</option>
+                    <option value="Not Started" {% if progress_filter=='Not Started' %}selected{% endif %}>Not Started
+                    </option>
+                    <option value="In Progress" {% if progress_filter=='In Progress' %}selected{% endif %}>In Progress
+                    </option>
+                    <option value="Revised" {% if progress_filter=='Revised' %}selected{% endif %}>Revised</option>
+                    <option value="Mastered" {% if progress_filter=='Mastered' %}selected{% endif %}>Mastered</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-primary-soft">Filter</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<section class="glass-card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h3 class="fw-bold mb-1">Your Topics</h3>
+            <div class="small-muted">{{ topics|length }} topics found</div>
+        </div>
+    </div>
+
+    {% if topics %}
+    <div class="row g-4">
+        {% for topic in topics %}
+        <div class="col-md-6 col-xl-4">
+            <div class="soft-card p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                    <div>
+                        <div class="small-muted mb-1">Topic</div>
+                        <h5 class="fw-bold mb-1">{{ topic.topic_name }}</h5>
+                        <div class="small-muted">
+                            {{ topic.category if topic.category else 'No category added' }}
+                        </div>
+                    </div>
+
+                    {% if topic.progress_status == 'Not Started' %}
+                    <span class="status-badge" style="background: rgba(148,163,184,.15); color: #475569;">
+                        {{ topic.progress_status }}
+                    </span>
+                    {% elif topic.progress_status == 'In Progress' %}
+                    <span class="status-badge" style="background: rgba(59,130,246,.14); color: #1d4ed8;">
+                        {{ topic.progress_status }}
+                    </span>
+                    {% elif topic.progress_status == 'Revised' %}
+                    <span class="status-badge" style="background: rgba(245,158,11,.15); color: #b45309;">
+                        {{ topic.progress_status }}
+                    </span>
+                    {% else %}
+                    <span class="status-badge" style="background: rgba(16,185,129,.14); color: #047857;">
+                        {{ topic.progress_status }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div class="small-muted mb-2">Notes</div>
+                <p class="mb-3" style="min-height: 72px;">
+                    {{ topic.notes if topic.notes else 'No notes added yet for this topic.' }}
+                </p>
+
+                <div class="small-muted mb-3">Created: {{ topic.created_at }}</div>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ url_for('edit_prep_topic', topic_id=topic.id) }}" class="btn btn-light-soft btn-sm">
+                        Edit
+                    </a>
+
+                    <form method="POST" action="{{ url_for('delete_prep_topic', topic_id=topic.id) }}"
+                        onsubmit="return confirm('Are you sure you want to delete this preparation topic?');">
+                        <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="soft-card p-5 text-center">
+        <h5 class="fw-bold mb-2">No preparation topics found</h5>
+        <p class="small-muted mb-3">
+            Start by adding your first interview preparation topic.
+        </p>
+        <a href="{{ url_for('add_prep_topic') }}" class="btn btn-primary-soft">Add First Topic</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

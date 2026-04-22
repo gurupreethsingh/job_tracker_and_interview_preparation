@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}All Master Questions | CareerForge{% endblock %}
+{% block content %}
+<section class="glass-card p-4 p-md-5 mb-4">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+    <div><span class="section-pill">Superadmin</span><h1 class="fw-bold mt-3 mb-2">All Master Questions</h1><p class="small-muted mb-0">Users can browse these and add them to their personal bank.</p></div>
+    <a href="{{ url_for('add_master_question') }}" class="btn btn-primary-soft">Add Question</a>
+  </div>
+</section>
+<section class="soft-card p-4 mb-4">
+  <form method="GET">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-4"><label class="form-label fw-semibold">Search</label><input type="text" name="search" value="{{ search }}" class="form-control rounded-4"></div>
+      <div class="col-md-3"><label class="form-label fw-semibold">Topic</label><select name="topic_id" class="form-select rounded-4"><option value="">All</option>{% for topic in topics %}<option value="{{ topic.id }}" {% if topic_filter == topic.id|string %}selected{% endif %}>{{ topic.topic_name }}</option>{% endfor %}</select></div>
+      <div class="col-md-3"><label class="form-label fw-semibold">Difficulty</label><select name="difficulty" class="form-select rounded-4"><option value="">All</option><option value="Easy" {% if difficulty == 'Easy' %}selected{% endif %}>Easy</option><option value="Medium" {% if difficulty == 'Medium' %}selected{% endif %}>Medium</option><option value="Hard" {% if difficulty == 'Hard' %}selected{% endif %}>Hard</option></select></div>
+      <div class="col-md-2 d-grid"><button type="submit" class="btn btn-primary-soft">Filter</button></div>
+    </div>
+  </form>
+</section>
+<section class="glass-card p-4">
+  {% for item in questions %}
+  <div class="soft-card p-4 mb-3">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-2">
+      <div>
+        <div class="d-flex flex-wrap gap-2 mb-2">
+          <span class="status-badge status-user">{{ item.topic_name }}</span>
+          {% if item.difficulty %}<span class="status-badge status-admin">{{ item.difficulty }}</span>{% endif %}
+        </div>
+        <h5 class="fw-bold mb-2">{{ item.question }}</h5>
+      </div>
+      <div class="small-muted text-lg-end">{{ item.created_at }}</div>
+    </div>
+    <div class="mb-3">{{ item.answer if item.answer else 'No answer added yet.' }}</div>
+    <div class="d-flex gap-2">
+      <a href="{{ url_for('edit_master_question', question_id=item.id) }}" class="btn btn-sm btn-light-soft">Edit</a>
+      <form method="POST" action="{{ url_for('delete_master_question', question_id=item.id) }}" onsubmit="return confirm('Deactivate this question?');">
+        <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">Delete</button>
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <div class="soft-card p-4 text-center small-muted">No questions found.</div>
+  {% endfor %}
+</section>
+{% endblock %}

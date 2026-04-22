@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}All Users | CareerForge{% endblock %}
+{% block content %}
+<section class="glass-card p-4 p-md-5 mb-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <div><span class="section-pill">Superadmin</span><h1 class="fw-bold mt-3 mb-2">All Users</h1></div>
+    <a href="{{ url_for('super_admin_dashboard') }}" class="btn btn-light-soft">Back</a>
+  </div>
+</section>
+<section class="glass-card p-4 mb-4">
+  <h4 class="fw-bold mb-3">Active Users</h4>
+  <form method="POST">
+    <div class="d-flex gap-2 mb-3 flex-wrap">
+      <button formaction="{{ url_for('soft_delete_users') }}" type="submit" class="btn btn-light-soft">Soft Delete Selected</button>
+      <button formaction="{{ url_for('hard_delete_users') }}" type="submit" class="btn btn-primary-soft" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">Hard Delete Selected</button>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-clean align-middle mb-0">
+        <thead><tr><th><input type="checkbox" id="selectAllActive" class="form-check-input"></th><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Created</th><th>Action</th></tr></thead>
+        <tbody>
+        {% for user in active_users %}
+          <tr>
+            <td>{% if user.id != current_user_id %}<input type="checkbox" name="selected_users" value="{{ user.id }}" class="form-check-input active-user-checkbox">{% endif %}</td>
+            <td>{{ user.id }}</td><td class="fw-semibold">{{ user.full_name }}</td><td>{{ user.email }}</td><td>{{ user.role }}</td><td>{{ user.created_at }}</td>
+            <td><a href="{{ url_for('update_role', user_id=user.id) }}" class="btn btn-sm btn-light-soft">Update Role</a></td>
+          </tr>
+        {% else %}
+          <tr><td colspan="7" class="text-center py-4 small-muted">No active users found.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </form>
+</section>
+<section class="glass-card p-4">
+  <h4 class="fw-bold mb-3">Deleted Users</h4>
+  <form method="POST" action="{{ url_for('restore_users') }}">
+    <button type="submit" class="btn btn-primary-soft mb-3" style="background: linear-gradient(135deg, #059669, #0ea5e9);">Restore Selected</button>
+    <div class="table-responsive">
+      <table class="table table-clean align-middle mb-0">
+        <thead><tr><th><input type="checkbox" id="selectAllDeleted" class="form-check-input"></th><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Deleted At</th></tr></thead>
+        <tbody>
+        {% for user in deleted_users %}
+          <tr>
+            <td><input type="checkbox" name="selected_deleted_users" value="{{ user.id }}" class="form-check-input deleted-user-checkbox"></td>
+            <td>{{ user.id }}</td><td class="fw-semibold">{{ user.full_name }}</td><td>{{ user.email }}</td><td>{{ user.role }}</td><td>{{ user.deleted_at }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="6" class="text-center py-4 small-muted">No deleted users found.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </form>
+</section>
+<script>
+const selectAllActive = document.getElementById("selectAllActive");
+const activeCheckboxes = document.querySelectorAll(".active-user-checkbox");
+if (selectAllActive) {
+  selectAllActive.addEventListener("change", function () {
+    activeCheckboxes.forEach(cb => cb.checked = this.checked);
+  });
+}
+const selectAllDeleted = document.getElementById("selectAllDeleted");
+const deletedCheckboxes = document.querySelectorAll(".deleted-user-checkbox");
+if (selectAllDeleted) {
+  selectAllDeleted.addEventListener("change", function () {
+    deletedCheckboxes.forEach(cb => cb.checked = this.checked);
+  });
+}
+</script>
+{% endblock %}
